@@ -6,3 +6,62 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+
+include_recipe 'docker'
+
+execute 'echo pwd' do
+end
+
+docker_image 'ubuntu' do
+  tag 'happiness-service'
+  # source 'https://raw.githubusercontent.com/austenito/happiness-service-docker/master/Dockerfile'
+  source '/vagrant/docker-files/happiness-service/Dockerfile'
+  action :build
+end
+
+docker_container 'happiness-service' do
+  action :stop
+end
+
+docker_container 'happiness-service' do
+  action :remove
+end
+
+execute 'remove cid' do
+  command 'rm -f /var/run/happiness-service*.cid'
+end
+
+docker_container 'happiness-service' do
+  image 'ubuntu:happiness-service'
+  container_name "happiness-service"
+  command "bash -c 'source /usr/local/share/chruby/chruby.sh && \
+                    git clone https://github.com/austenito/happiness_service.git && \
+                    cd happiness_service && \
+                    chruby 2.1.2 && \
+                    bundle install'"
+  detach false
+  volume '/mnt/docker:/docker-storage'
+  working_directory '/home'
+  cmd_timeout 600
+end
+
+timestamp = Time.new.strftime('%Y%m%d%H%M')
+
+# Commit container changes
+docker_container 'happiness-service' do
+  repository 'ubuntu'
+  tag "happiness-service-#{timestamp}"
+  action :commit
+end
+
+docker_container "happiness-service" do
+  image "ubuntu:happiness-service-#{timestamp}"
+  container_name "happiness-service-#{timestamp}"
+  command "bash -c 'source /usr/local/share/chruby/chruby.sh && \
+                    chruby 2.1.2 && \
+                    rails server'"
+  port '3000:3000'
+  detach true
+  volume '/mnt/docker:/docker-storage'
+  working_directory '/home/happiness_service'
+end
