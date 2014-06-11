@@ -9,9 +9,6 @@
 
 include_recipe 'docker'
 
-execute 'echo pwd' do
-end
-
 docker_image 'ubuntu' do
   tag 'happiness-service'
   # source 'https://raw.githubusercontent.com/austenito/happiness-service-docker/master/Dockerfile'
@@ -21,6 +18,7 @@ end
 
 docker_container 'happiness-service' do
   action :stop
+  force true
 end
 
 docker_container 'happiness-service' do
@@ -38,11 +36,12 @@ docker_container 'happiness-service' do
                     git clone https://github.com/austenito/happiness_service.git && \
                     cd happiness_service && \
                     chruby 2.1.2 && \
-                    bundle install'"
+                    bundle install && \
+                    rake db:create db:migrate'"
   detach false
-  volume '/mnt/docker:/docker-storage'
   working_directory '/home'
   cmd_timeout 600
+  env "POSTGRES_USER=#{ENV['POSTGRES_USER']} POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"
 end
 
 timestamp = Time.new.strftime('%Y%m%d%H%M')
@@ -59,9 +58,9 @@ docker_container "happiness-service" do
   container_name "happiness-service-#{timestamp}"
   command "bash -c 'source /usr/local/share/chruby/chruby.sh && \
                     chruby 2.1.2 && \
-                    rails server'"
+                    unicorn -p 3000'"
   port '3000:3000'
   detach true
-  volume '/mnt/docker:/docker-storage'
   working_directory '/home/happiness_service'
+  env "POSTGRES_USER=#{ENV['POSTGRES_USER']} POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"
 end

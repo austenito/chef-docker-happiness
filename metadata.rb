@@ -1,7 +1,7 @@
-name             'chef-docker-happiness-service'
-maintainer       'YOUR_COMPANY_NAME'
-maintainer_email 'YOUR_EMAIL'
-license          'All rights reserved'
-description      'Installs/Configures chef-docker-happiness-service'
+name             'chef-docker-happiness'
+maintainer       'Austen Ito'
+maintainer_email 'austen.dev@gmail.com'
+license          'MIT License'
+description      'Installs/Configures happiness services'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.0'
