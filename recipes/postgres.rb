@@ -9,6 +9,19 @@
 
 include_recipe 'docker'
 
+docker_image 'ubuntu' do
+  tag 'postgres-data'
+  # source 'https://raw.githubusercontent.com/austenito/happiness-service-docker/master/Dockerfile'
+  source '/vagrant/docker-files/postgres-data'
+  action :build
+end
+
+docker_container 'postgres-data' do
+  image 'ubuntu:postgres-data'
+  container_name 'postgres-data'
+  detach true
+end
+
 docker_container 'postgres-production' do
   action :stop
   force true
@@ -34,33 +47,6 @@ docker_container 'postgres-production' do
   container_name 'postgres-production'
   port "5432:5432"
   detach true
+  env ["POSTGRES_USER=#{ENV['POSTGRES_USER']}", "POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"]
+  volumes_from 'postgres-data'
 end
-
-execute 'set credentials' do
-  command "PGPASSWORD=docker \
-           psql -h localhost -U docker -p 5432 --command \"CREATE USER #{ENV['POSTGRES_USER']} WITH SUPERUSER PASSWORD '#{ENV['POSTGRES_PASSWORD']}';\""
-end
-
-# timestamp = Time.new.strftime('%Y%m%d%H%M')
-
-# docker_container 'postgres-production' do
-  # repository 'ubuntu'
-  # tag "postgres-production-#{timestamp}"
-  # action :commit
-# end
-
-# docker_container 'postgres-production' do
-  # action :stop
-  # force true
-# end
-
-# docker_container 'postgres-production' do
-  # action :remove
-# end
-
-# docker_container "postgres-production" do
-  # image "ubuntu:postgres-production-#{timestamp}"
-  # container_name 'postgres-production'
-  # publish_exposed_ports true
-  # detach true
-# end
