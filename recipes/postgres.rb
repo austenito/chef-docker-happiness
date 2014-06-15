@@ -11,8 +11,8 @@ include_recipe 'docker'
 
 docker_image 'ubuntu' do
   tag 'postgres-data'
-  # source 'https://raw.githubusercontent.com/austenito/happiness-service-docker/master/Dockerfile'
-  source '/vagrant/docker-files/postgres-data'
+  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/postgres-data/Dockerfile'
+  # source '/vagrant/docker-files/postgres-data'
   action :build_if_missing
 end
 
@@ -25,8 +25,8 @@ end
 
 docker_image 'ubuntu' do
   tag 'postgres-production'
-  # source 'https://raw.githubusercontent.com/austenito/happiness-service-docker/master/Dockerfile'
-  source '/vagrant/docker-files/postgres/Dockerfile'
+  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/postgres/Dockerfile'
+  # source '/vagrant/docker-files/postgres/Dockerfile'
   action :build_if_missing
 end
 
@@ -42,4 +42,5 @@ docker_container 'postgres-production' do
   env ["POSTGRES_USER=#{ENV['POSTGRES_USER']}", "POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"]
   volumes_from 'postgres-data'
   action :run
+  working_directory '/apps/happiness_service'
 end
