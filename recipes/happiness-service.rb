@@ -25,7 +25,7 @@ docker_container 'happiness-service' do
   image 'ubuntu:happiness-service'
   container_name "happiness-service"
   detach true
-  env ["LOGENTRIES_TOKEN=#{ENV['LOGENTRIES_TOKEN']}"]
+  env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_SERVICE_TOKEN']}"]
   link ['postgres-production:db']
   action :run
   port '3000:3000'
