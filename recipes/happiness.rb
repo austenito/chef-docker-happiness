@@ -10,8 +10,8 @@ include_recipe 'docker'
 
 docker_image 'ubuntu' do
   tag 'happiness'
-  # source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
-  source '/vagrant/docker-files/happiness/Dockerfile'
+  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
+  # source '/vagrant/docker-files/happiness/Dockerfile'
   action :build_if_missing
   cmd_timeout 900
 end
@@ -24,7 +24,7 @@ docker_container 'happiness' do
   image 'ubuntu:happiness'
   container_name "happiness"
   detach true
-  env ["LOGENTRIES_HAPPINESS_TOKEN=#{ENV['LOGENTRIES_SERVICE_TOKEN']}"]
+  env ["LOGENTRIES_HAPPINESS_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_TOKEN']}"]
   link ['postgres-production:db']
   action :run
   port '3001:3001'

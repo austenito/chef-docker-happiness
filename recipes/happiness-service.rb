@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: chef-docker-happiness-service
-# Recipe:: default
+# Recipe::happiness-service
 #
 # Copyright 2014, YOUR_COMPANY_NAME
 #
