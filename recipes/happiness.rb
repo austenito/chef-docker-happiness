@@ -10,22 +10,31 @@ include_recipe 'docker'
 
 docker_image 'ubuntu' do
   tag 'happiness'
-  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
-  # source '/vagrant/docker-files/happiness/Dockerfile'
+  # source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
+  source '/vagrant/docker-files/happiness/Dockerfile'
   action :build_if_missing
   cmd_timeout 900
 end
 
-docker_container('happiness') { action :stop }
-docker_container('happiness') { action :remove; force true }
-execute('remove cid') { command 'rm -f /var/run/happiness.cid' }
+
+if File.exists?('/var/run/happiness.cid')
+  f = File.open('/var/run/happiness.cid', 'r')
+  cid = ''
+  f.each_line do |line|
+    cid = line
+  end
+
+  execute('stop container') { command "docker stop -t 60 #{cid}" }
+  execute('remove container') { command "docker rm -f #{cid}" }
+  execute('remove cid') { command 'rm -f /var/run/happiness.cid' }
+end
 
 docker_container 'happiness' do
   image 'ubuntu:happiness'
   container_name "happiness"
   detach true
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_TOKEN']}"]
-  link ['postgres-production:db']
+  link ['happiness-service:happiness_service']
   action :run
   port '3001:3001'
 end

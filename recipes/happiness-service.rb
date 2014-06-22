@@ -17,9 +17,20 @@ docker_image 'ubuntu' do
   cmd_timeout 900
 end
 
-docker_container('happiness-service') { action :stop }
-docker_container('happiness-service') { action :remove }
-execute('remove cid') { command 'rm -f /var/run/happiness-service.cid' }
+if File.exists?('/var/run/happiness-service.cid')
+  f = File.open('/var/run/happiness-service.cid', 'r')
+  cid = ''
+  f.each_line do |line|
+    cid = line
+  end
+
+  execute('stop container') { command "docker stop -t 60 #{cid}" }
+  execute('remove container') { command "docker rm -f #{cid}" }
+  execute('remove cid') { command 'rm -f /var/run/happiness-service.cid' }
+end
+# docker_container('happiness-service') { action :stop }
+# docker_container('happiness-service') { action :remove }
+# execute('remove cid') { command 'rm -f /var/run/happiness-service.cid' }
 
 docker_container 'happiness-service' do
   image 'ubuntu:happiness-service'
