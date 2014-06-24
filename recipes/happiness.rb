@@ -34,7 +34,7 @@ docker_container 'happiness' do
   container_name "happiness"
   detach true
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_TOKEN']}"]
-  link ['happiness-service:happiness_service']
+  link ['postgres-production:db', 'happiness-service:happiness_service']
   action :run
   port '3001:3001'
 end
