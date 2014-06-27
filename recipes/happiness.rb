@@ -10,8 +10,8 @@ include_recipe 'docker'
 
 docker_image 'ubuntu' do
   tag 'happiness'
-  # source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
-  source '/vagrant/docker-files/happiness/Dockerfile'
+  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
+  # source '/vagrant/docker-files/happiness/Dockerfile'
   action :build_if_missing
   cmd_timeout 900
 end

@@ -28,9 +28,6 @@ if File.exists?('/var/run/happiness-service.cid')
   execute('remove container') { command "docker rm -f #{cid}" }
   execute('remove cid') { command 'rm -f /var/run/happiness-service.cid' }
 end
-# docker_container('happiness-service') { action :stop }
-# docker_container('happiness-service') { action :remove }
-# execute('remove cid') { command 'rm -f /var/run/happiness-service.cid' }
 
 docker_container 'happiness-service' do
   image 'ubuntu:happiness-service'
