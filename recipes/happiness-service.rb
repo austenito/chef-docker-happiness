@@ -35,6 +35,7 @@ docker_container 'happiness-service' do
   detach true
   env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_SERVICE_TOKEN']}"]
   link ['postgres-production:db']
+  volumes_from 'app-data'
   action :run
   port '3000:3000'
 end
