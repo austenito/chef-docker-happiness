@@ -16,17 +16,15 @@ docker_image 'ubuntu' do
   action :build_if_missing
 end
 
-docker_container('postgres-production') { action :stop }
-docker_container('postgres-production') { action :remove }
-execute('remove cid') { command 'rm -f /var/run/postgres-production.cid' }
+docker_container('nginx') { action :stop }
+docker_container('nginx') { action :remove }
+execute('remove cid') { command 'rm -f /var/run/nginx.cid' }
 
-docker_container 'postgres-production' do
-  image 'ubuntu:postgres-production'
-  container_name 'postgres-production'
-  port "5432:5432"
+docker_container 'nginx' do
+  image 'ubuntu:nginx'
+  container_name 'postgres-nginx'
+  port "80:80"
+  link ['happiness:happiness', 'happiness-service:happiness_service']
   detach true
-  env ["POSTGRES_USER=#{ENV['POSTGRES_USER']}", "POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"]
-  volumes_from 'postgres-data'
   action :run
-  working_directory '/apps/happiness_service'
 end
