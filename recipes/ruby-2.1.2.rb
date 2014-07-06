@@ -9,7 +9,7 @@
 
 include_recipe 'docker'
 
-docker_image 'austenito' do
+docker_image 'ubuntu' do
   tag 'ruby-2.1.2'
   cmd_timeout 900
   action :build_if_missing
