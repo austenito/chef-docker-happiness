@@ -9,7 +9,7 @@
 
 include_recipe 'docker'
 
-docker_image 'ubuntu' do
+docker_image 'austenito' do
   tag 'happiness-service'
   source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness-service/Dockerfile'
   # source '/vagrant/docker-files/happiness-service/Dockerfile'
@@ -30,12 +30,11 @@ if File.exists?('/var/run/happiness-service.cid')
 end
 
 docker_container 'happiness-service' do
-  image 'ubuntu:happiness-service'
+  image 'austenito:happiness-service'
   container_name "happiness-service"
   detach true
   env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_SERVICE_TOKEN']}"]
   link ['postgres-production:db']
-  volumes_from 'app-data'
   action :run
   port '3000:3000'
 end

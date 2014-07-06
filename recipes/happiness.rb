@@ -8,7 +8,7 @@
 
 include_recipe 'docker'
 
-docker_image 'ubuntu' do
+docker_image 'austenito' do
   tag 'happiness'
   source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
   # source '/vagrant/docker-files/happiness/Dockerfile'
@@ -30,7 +30,7 @@ if File.exists?('/var/run/happiness.cid')
 end
 
 docker_container 'happiness' do
-  image 'ubuntu:happiness'
+  image 'austenito:happiness'
   container_name "happiness"
   detach true
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_TOKEN']}", "POPTART_API_TOKEN=#{ENV['POPTART_API_TOKEN']}"]

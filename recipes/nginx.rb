@@ -22,7 +22,7 @@ execute('remove cid') { command 'rm -f /var/run/nginx.cid' }
 
 docker_container 'nginx' do
   image 'ubuntu:nginx'
-  container_name 'postgres-nginx'
+  container_name 'nginx'
   port "80:80"
   link ['happiness:happiness', 'happiness-service:happiness_service']
   detach true

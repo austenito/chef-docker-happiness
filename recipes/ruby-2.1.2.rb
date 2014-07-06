@@ -9,10 +9,8 @@
 
 include_recipe 'docker'
 
-docker_image 'ubuntu' do
+docker_image 'austenito' do
   tag 'ruby-2.1.2'
-  # source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/postgres-data/Dockerfile'
-  source '/vagrant/docker-files/ruby-2.1.2'
   cmd_timeout 900
   action :build_if_missing
 end
