@@ -10,20 +10,6 @@
 include_recipe 'docker'
 
 docker_image 'ubuntu' do
-  tag 'postgres-data'
-  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/postgres-data/Dockerfile'
-  # source '/vagrant/docker-files/postgres-data'
-  action :build_if_missing
-end
-
-docker_container 'postgres-data' do
-  image 'ubuntu:postgres-data'
-  container_name 'postgres-data'
-  detach true
-  action :run
-end
-
-docker_image 'ubuntu' do
   tag 'postgres-production'
   source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/postgres/Dockerfile'
   # source '/vagrant/docker-files/postgres/Dockerfile'
@@ -40,7 +26,7 @@ docker_container 'postgres-production' do
   port "5432:5432"
   detach true
   env ["POSTGRES_USER=#{ENV['POSTGRES_USER']}", "POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"]
-  volumes_from 'postgres-data'
+  volumes_from 'happiness-data'
   action :run
   working_directory '/apps/happiness_service'
 end

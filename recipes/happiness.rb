@@ -8,14 +8,7 @@
 
 include_recipe 'docker'
 
-docker_image 'austenito' do
-  tag 'happiness'
-  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness/Dockerfile'
-  # source '/vagrant/docker-files/happiness/Dockerfile'
-  action :build_if_missing
-  cmd_timeout 900
-end
-
+docker_image 'austenito/ruby-2.1.2'
 
 if File.exists?('/var/run/happiness.cid')
   f = File.open('/var/run/happiness.cid', 'r')
@@ -30,11 +23,13 @@ if File.exists?('/var/run/happiness.cid')
 end
 
 docker_container 'happiness' do
-  image 'austenito:happiness'
+  image 'austenito/ruby-2.1.2'
   container_name "happiness"
   detach true
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_TOKEN']}", "POPTART_API_TOKEN=#{ENV['POPTART_API_TOKEN']}"]
   link ['postgres-production:db', 'happiness-service:happiness_service']
+  volumes_from 'happiness-data'
   action :run
   port '3001:3001'
+  command '/config/happiness/run.sh'
 end
