@@ -27,7 +27,7 @@ docker_container 'happiness-service' do
   image 'austenito/ruby-2.1.2'
   container_name "happiness-service"
   detach true
-  env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{ENV['LOGENTRIES_HAPPINESS_SERVICE_TOKEN']}"]
+  env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{node['logentries']['happiness_service'][node.chef_environment]['token']}"]
   link ['postgres-production:db']
   volumes_from 'happiness-data'
   action :run

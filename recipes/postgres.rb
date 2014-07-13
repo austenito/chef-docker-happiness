@@ -25,7 +25,9 @@ docker_container 'postgres-production' do
   container_name 'postgres-production'
   port "5432:5432"
   detach true
-  env ["POSTGRES_USER=#{ENV['POSTGRES_USER']}", "POSTGRES_PASSWORD=#{ENV['POSTGRES_PASSWORD']}"]
+  env ["POSTGRES_USER=#{node['postgres'][node.chef_environment]['user']}",
+       "POSTGRES_PASSWORD=#{node['postgres'][node.chef_environment]['password']}"
+      ]
   volumes_from 'happiness-data'
   action :run
   working_directory '/apps/happiness_service'
