@@ -17,9 +17,8 @@ docker_image 'austenito/ruby-2.1.2' do
   cmd_timeout 900
 end
 
-docker_container('nginx') { action :stop }
-docker_container('nginx') { action :remove }
-execute('remove cid') { command 'rm -f /var/run/nginx.cid' }
+execute('stop container') { command "docker stop -t 60 nginx" }
+execute('remove container') { command "docker rm -f nginx" }
 
 docker_container 'nginx' do
   image 'austenito/ruby-2.1.2:nginx'

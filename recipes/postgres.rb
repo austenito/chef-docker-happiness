@@ -16,17 +16,16 @@ docker_image 'ubuntu' do
   action :build_if_missing
 end
 
-docker_container('postgres-production') { action :stop }
-docker_container('postgres-production') { action :remove }
-execute('remove cid') { command 'rm -f /var/run/postgres-production.cid' }
+execute('stop container') { command "docker stop -t 60 postgres-production" }
+execute('remove container') { command "docker rm -f postgres-production" }
 
 docker_container 'postgres-production' do
   image 'ubuntu:postgres-production'
   container_name 'postgres-production'
   port "5432:5432"
   detach true
-  env ["POSTGRES_USER=#{node['postgres'][node.chef_environment]['user']}",
-       "POSTGRES_PASSWORD=#{node['postgres'][node.chef_environment]['password']}"
+  env ["POSTGRES_USER=#{node['postgres']['user']}",
+       "POSTGRES_PASSWORD=#{node['postgres']['password']}"
       ]
   volumes_from 'happiness-data'
   action :run

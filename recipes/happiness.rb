@@ -10,24 +10,15 @@ include_recipe 'docker'
 
 docker_image 'austenito/ruby-2.1.2'
 
-if File.exists?('/var/run/happiness.cid')
-  f = File.open('/var/run/happiness.cid', 'r')
-  cid = ''
-  f.each_line do |line|
-    cid = line
-  end
-
-  execute('stop container') { command "docker stop -t 60 #{cid}" }
-  execute('remove container') { command "docker rm -f #{cid}" }
-  execute('remove cid') { command 'rm -f /var/run/happiness.cid' }
-end
+execute('stop container') { command "docker stop -t 60 happiness" }
+execute('remove container') { command "docker rm -f happiness" }
 
 docker_container 'happiness' do
   image 'austenito/ruby-2.1.2'
   container_name "happiness"
   detach true
-  env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness_service'][node.chef_environment]['token']}",
-       "POPTART_API_TOKEN=#{node['poptart'][node.chef_environment]['token']}"
+  env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness_service']}",
+       "POPTART_API_TOKEN=#{node['poptart']['token']}"
       ]
   link ['postgres-production:db', 'happiness-service:happiness_service']
   volumes_from 'happiness-data'
