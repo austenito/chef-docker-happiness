@@ -9,19 +9,16 @@
 
 include_recipe 'docker'
 
-docker_image 'ubuntu' do
-  tag 'postgres-production'
-  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/postgres/Dockerfile'
-  # source '/vagrant/docker-files/postgres/Dockerfile'
-  action :build_if_missing
+docker_image 'austenito/postgres'
+
+if `sudo docker ps -a | grep postgres`.size > 0
+  execute('stop container') { command "docker stop -t 60 postgres" }
+  execute('remove container') { command "docker rm -f postgres" }
 end
 
-execute('stop container') { command "docker stop -t 60 postgres-production" }
-execute('remove container') { command "docker rm -f postgres-production" }
-
-docker_container 'postgres-production' do
-  image 'ubuntu:postgres-production'
-  container_name 'postgres-production'
+docker_container 'postgres' do
+  image 'austenito/postgres'
+  container_name 'postgres'
   port "5432:5432"
   detach true
   env ["POSTGRES_USER=#{node['postgres']['user']}",
@@ -29,5 +26,4 @@ docker_container 'postgres-production' do
       ]
   volumes_from 'happiness-data'
   action :run
-  working_directory '/apps/happiness_service'
 end

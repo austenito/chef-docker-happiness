@@ -9,19 +9,15 @@
 
 include_recipe 'docker'
 
-docker_image 'austenito/ruby-2.1.2' do
-  tag 'nginx'
-  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/nginx/Dockerfile'
-  # source '/vagrant/docker-files/postgres/Dockerfile'
-  action :build_if_missing
-  cmd_timeout 900
+docker_image 'austenito/nginx'
+
+if `sudo docker ps -a | grep nginx`.size > 0
+  execute('stop container') { command "docker stop -t 60 nginx" }
+  execute('remove container') { command "docker rm -f nginx" }
 end
 
-execute('stop container') { command "docker stop -t 60 nginx" }
-execute('remove container') { command "docker rm -f nginx" }
-
 docker_container 'nginx' do
-  image 'austenito/ruby-2.1.2:nginx'
+  image 'austenito/nginx'
   container_name 'nginx'
   port "80:80"
   link ['happiness:happiness', 'happiness-service:happiness_service']
