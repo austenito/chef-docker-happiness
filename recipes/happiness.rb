@@ -19,7 +19,7 @@ docker_container 'happiness' do
   image 'austenito/ruby-2.1.2'
   container_name "happiness"
   detach true
-  env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness_service']}",
+  env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness']}",
        "POPTART_API_TOKEN=#{node['poptart']['token']}"
       ]
   link ['postgres:db', 'happiness-service:happiness_service']
