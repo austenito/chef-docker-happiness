@@ -21,6 +21,7 @@ docker_container 'nginx' do
   container_name 'nginx'
   port "80:80"
   link ['happiness:happiness', 'happiness-service:happiness_service']
+  volumes_from 'happiness-data'
   detach true
   action :run
 end
