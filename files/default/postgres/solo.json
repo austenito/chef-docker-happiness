@@ -1,0 +1,21 @@
+{
+  "postgresql": {
+    "password": {
+      "postgres": "postgres"
+    },
+    "config": {
+      "listen_addresses": "*",
+      "port": 5432
+    },
+    "pg_hba" : [ { "comment": "# Allow remote connections",
+                   "type": "host",
+                   "db" : "all",
+                   "user": "all",
+                   "addr": "0.0.0.0/0",
+                   "method": "md5" }
+               ]
+  },
+  "run_list": [
+    "recipe[postgresql::server]"
+  ]
+}

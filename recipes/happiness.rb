@@ -8,7 +8,15 @@
 
 include_recipe 'docker'
 
-docker_image 'austenito/ruby-2.1.2'
+remote_directory '/tmp/happiness' do
+  source 'happiness'
+end
+
+docker_image 'austenito/happiness' do
+  source '/tmp/happiness'
+  action :build_if_missing
+  cmd_timeout 900
+end
 
 if `sudo docker ps -a | grep happiness,`.size > 0
   execute('stop container') { command "docker stop -t 60 happiness" }

@@ -9,9 +9,14 @@
 
 include_recipe 'docker'
 
+cookbook_file 'Dockerfile' do
+  path '/tmp/Dockerfile'
+  source 'happiness-data/Dockerfile'
+end
+
 docker_image 'ubuntu' do
   tag 'happiness-data'
-  source 'https://raw.githubusercontent.com/austenito/happiness-kitchen/master/docker-files/happiness-data/Dockerfile'
+  source '/tmp'
   action :build_if_missing
 end
 
