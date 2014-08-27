@@ -5,6 +5,6 @@ RUN chmod +x /tmp/happiness-service/run.sh
 
 RUN mkdir -p /apps
 
-VOLUME ["/apps/log/happiness-service"]
+VOLUME ["/apps/happiness-service/log"]
 
 CMD /tmp/happiness-service/run.sh

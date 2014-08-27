@@ -25,7 +25,7 @@ if `sudo docker ps -a | grep happiness-service`.size > 0
 end
 
 docker_container 'happiness-service' do
-  image 'austenito/ruby-2.1.2'
+  image 'austenito/happiness-service'
   container_name "happiness-service"
   detach true
   env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{node['logentries']['happiness_service']}"]
@@ -33,5 +33,4 @@ docker_container 'happiness-service' do
   volumes_from 'happiness-data'
   action :run
   port '3000:3000'
-  command '/config/happiness-service/run.sh'
 end

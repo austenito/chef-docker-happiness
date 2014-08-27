@@ -12,27 +12,26 @@ remote_directory '/tmp/happiness' do
   source 'happiness'
 end
 
-docker_image 'austenito/happiness' do
+docker_image 'austenito/frontend' do
   source '/tmp/happiness'
   action :build_if_missing
   cmd_timeout 900
 end
 
-if `sudo docker ps -a | grep happiness,`.size > 0
-  execute('stop container') { command "docker stop -t 60 happiness" }
-  execute('remove container') { command "docker rm -f happiness" }
+if `sudo docker ps -a | grep frontend,`.size > 0
+  execute('stop container') { command "docker stop -t 60 frontend" }
+  execute('remove container') { command "docker rm -f frontend" }
 end
 
-docker_container 'happiness' do
-  image 'austenito/ruby-2.1.2'
-  container_name "happiness"
+docker_container 'frontend' do
+  image 'austenito/frontend'
+  container_name "frontend"
   detach true
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness']}",
        "POPTART_API_TOKEN=#{node['poptart']['token']}"
       ]
-  link ['postgres:db', 'happiness-service:happiness_service']
+  link ['postgres:db', 'happiness-service:happiness-service']
   volumes_from 'happiness-data'
   action :run
   port '3001:3001'
-  command '/config/happiness/run.sh'
 end
