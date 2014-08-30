@@ -18,6 +18,7 @@ docker_image 'ubuntu' do
   tag 'happiness-data'
   source '/tmp'
   action :build_if_missing
+  cmd_timeout 900
 end
 
 docker_container 'happiness-data' do
