@@ -8,9 +8,7 @@ end
 docker_container 'hs-console' do
   image 'austenito/happiness-service'
   container_name "hs-console"
-  env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness']}",
-       "POPTART_API_TOKEN=#{node['poptart']['token']}"
-      ]
+  env ["LOGENTRIES_HAPPINESS_SERVICE_TOKEN=#{node['logentries']['happiness_service']}"]
   link ['postgres:db']
   volumes_from 'happiness-data'
   action :run
