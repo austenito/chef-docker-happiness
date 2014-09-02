@@ -19,7 +19,7 @@ docker_image 'austenito/happiness-service' do
   cmd_timeout 900
 end
 
-if `sudo docker ps -a | grep happiness-service`.size > 0
+if `sudo docker ps -a | grep -P happiness-service[^:]`.size > 0
   execute('stop container') { command "docker stop -t 60 happiness-service" }
   execute('remove container') { command "docker rm -f happiness-service" }
 end
