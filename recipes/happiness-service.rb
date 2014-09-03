@@ -15,7 +15,7 @@ end
 
 docker_image 'austenito/happiness-service' do
   source '/tmp/happiness-service'
-  action :build_if_missing
+  action :pull_if_missing
   cmd_timeout 900
 end
 

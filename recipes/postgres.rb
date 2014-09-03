@@ -12,7 +12,7 @@ end
 docker_image 'austenito/postgres' do
   source '/tmp/postgres'
   tag '9.3'
-  action :build_if_missing
+  action :pull_if_missing
   cmd_timeout 1600
 end
 

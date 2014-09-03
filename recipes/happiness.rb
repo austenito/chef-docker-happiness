@@ -12,9 +12,9 @@ remote_directory '/tmp/happiness' do
   source 'happiness'
 end
 
-docker_image 'austenito/frontend' do
+docker_image 'austenito/happiness-frontend' do
   source '/tmp/happiness'
-  action :build_if_missing
+  action :pull_if_missing
   cmd_timeout 900
 end
 
@@ -24,7 +24,7 @@ if `sudo docker ps -a | grep frontend,`.size > 0
 end
 
 docker_container 'frontend' do
-  image 'austenito/frontend'
+  image 'austenito/happiness-frontend'
   container_name "frontend"
   detach true
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness']}",
