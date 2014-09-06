@@ -22,7 +22,7 @@ if `sudo docker ps -a | grep nginx`.size > 0
 end
 
 docker_container 'nginx' do
-  image 'austenito/nginx:1.4.6'
+  image 'austenito/happiness-nginx:1.4.6'
   container_name 'nginx'
   port "80:80"
   link ['frontend:frontend', 'happiness-service:happiness-service']
