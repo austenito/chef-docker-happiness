@@ -30,7 +30,7 @@ docker_container 'frontend' do
   env ["LOGENTRIES_HAPPINESS_TOKEN=#{node['logentries']['happiness']}",
        "POPTART_API_TOKEN=#{node['poptart']['token']}"
       ]
-  link ['postgres:db', 'happiness-service:happiness-service']
+  link ['postgres:db', 'happiness-service:happiness_service']
   volumes_from 'happiness-data'
   action :run
   port '3001:3001'
