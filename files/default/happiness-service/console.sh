@@ -9,3 +9,4 @@ cd happiness_service
 export GEM_HOME=/gems/ruby/2.1.2
 chruby 2.1.2
 bundle install --without development test
+bundle exec rails console production
