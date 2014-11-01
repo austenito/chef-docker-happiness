@@ -18,7 +18,7 @@ docker_image 'austenito/happiness-frontend' do
   cmd_timeout 900
 end
 
-if `sudo docker ps -a | grep frontend,`.size > 0
+if `sudo docker ps -a | grep frontend`.size > 0
   execute('stop container') { command "docker stop -t 60 frontend" }
   execute('remove container') { command "docker rm -f frontend" }
 end
