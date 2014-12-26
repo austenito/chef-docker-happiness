@@ -2,9 +2,16 @@ The cookbook used to setup docker images and containers for [Happiness Service](
 
 # Backup and restore postgres
 
-## Add this to a cron task
+## Create a cron task to run your backup
+
+Start the container:
 ```
-sudo docker run --link postgres:db -v <local backup dir>:/backup -e "PGPASSWORD=<password>" austenito/postgres-backup:<tag>
+sudo docker run --link postgres:db -v <local backup dir>:/backup --name postgres-backup -e "PGPASSWORD=<password>" austenito/postgres-backup:<tag>
+```
+
+Then create a cron task using this command:
+```
+sudo docker start postgres-backup
 ```
 
 ## Restore DB
