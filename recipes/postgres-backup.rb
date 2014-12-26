@@ -12,7 +12,6 @@ end
 
 docker_image 'austenito/postgres-backup' do
   source '/tmp/postgres-backup'
-  tag Date.today.to_date.to_s
-  action :build
+  action :pull_if_missing
   cmd_timeout 1600
 end
