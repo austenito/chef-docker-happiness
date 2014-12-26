@@ -12,7 +12,7 @@ end
 docker_image 'austenito/happiness-nginx' do
   source '/tmp/nginx'
   tag '1.4.6'
-  action :pull_if_missing
+  action :build
   cmd_timeout 900
 end
 
