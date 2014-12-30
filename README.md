@@ -2,14 +2,13 @@ The cookbook used to setup docker images and containers for [Happiness Service](
 
 # Backup and restore postgres
 
-## Create a cron task to run your backup
+## Create container used to run the pgdump script
 
-Start the container:
 ```
 sudo docker run --link postgres:db -v <local backup dir>:/backup --name postgres-backup -e "PGPASSWORD=<password>" austenito/postgres-backup:<tag>
 ```
 
-Then create a cron task using this command:
+## Then create a cron task to start the container
 ```
 sudo docker start postgres-backup
 ```
